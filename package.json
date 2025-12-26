@@ -1,0 +1,42 @@
+{
+  "name": "webauthn-assert",
+  "version": "0.2.0",
+  "description": "Cross-platform CLI for WebAuthn security key assertions via CTAP2",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unstableneutron/webauthn-assert.git"
+  },
+  "homepage": "https://github.com/unstableneutron/webauthn-assert#readme",
+  "bugs": {
+    "url": "https://github.com/unstableneutron/webauthn-assert/issues"
+  },
+  "keywords": [
+    "webauthn",
+    "fido2",
+    "ctap2",
+    "security-key",
+    "yubikey",
+    "authentication"
+  ],
+  "bin": {
+    "webauthn-assert": "bin/webauthn-assert.js"
+  },
+  "scripts": {
+    "postinstall": "node install/install.js",
+    "check-version": "node scripts/check-version.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "bin/",
+    "install/",
+    "scripts/",
+    "src/",
+    "Cargo.toml",
+    "Cargo.lock",
+    "README.md",
+    "LICENSE"
+  ]
+}

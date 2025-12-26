@@ -18,10 +18,20 @@ This tool enables applications to authenticate using hardware security keys (Yub
 
 ## Installation
 
-### From crates.io
+### Via npm (recommended)
 
 ```bash
-cargo install webauthn-assert
+# Install from GitHub (downloads prebuilt binary or builds from source)
+npm install github:unstableneutron/webauthn-assert
+
+# Run directly
+npx webauthn-assert --check
+```
+
+### Via Cargo
+
+```bash
+cargo install --git https://github.com/unstableneutron/webauthn-assert
 ```
 
 ### From source

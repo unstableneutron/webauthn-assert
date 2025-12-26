@@ -1,6 +1,6 @@
 [package]
 name = "webauthn-assert"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "Cross-platform CLI for WebAuthn security key assertions via CTAP2"
 license = "MIT"
