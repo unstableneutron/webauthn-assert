@@ -85,7 +85,7 @@ async function downloadPrebuilt(binaryPath) {
     const extractDir = path.dirname(binaryPath);
     ensureDir(extractDir);
 
-    await extractTarGz(tarPath, extractDir);
+    extractTarGz(tarPath, extractDir);
 
     if (!fs.existsSync(binaryPath)) {
       const files = fs.readdirSync(extractDir);

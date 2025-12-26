@@ -147,13 +147,17 @@ function parseChecksums(content) {
 }
 
 function extractTarGz(tarPath, destDir) {
-  const zlib = require("zlib");
-  const tar = require("tar");
+  const { spawnSync } = require("child_process");
 
-  return tar.x({
-    file: tarPath,
-    cwd: destDir,
+  const result = spawnSync("tar", ["xzf", tarPath, "-C", destDir], {
+    stdio: "pipe",
+    shell: process.platform === "win32",
   });
+
+  if (result.status !== 0) {
+    const stderr = result.stderr?.toString() || "";
+    throw new Error(`tar extraction failed: ${stderr}`);
+  }
 }
 
 function ensureDir(dir) {
