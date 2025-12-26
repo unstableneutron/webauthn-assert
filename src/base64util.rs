@@ -16,6 +16,10 @@ pub fn encode(data: &[u8]) -> String {
     general_purpose::STANDARD.encode(data)
 }
 
+pub fn encode_url_no_pad(data: &[u8]) -> String {
+    general_purpose::URL_SAFE_NO_PAD.encode(data)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -46,5 +50,23 @@ mod tests {
         let data = b"Hello World";
         let result = encode(data);
         assert_eq!(result, "SGVsbG8gV29ybGQ=");
+    }
+
+    #[test]
+    fn test_encode_url_no_pad() {
+        let data = b"Hello World";
+        let result = encode_url_no_pad(data);
+        assert_eq!(result, "SGVsbG8gV29ybGQ");
+        assert!(!result.contains('='));
+    }
+
+    #[test]
+    fn test_encode_url_no_pad_special_chars() {
+        let data = b"\xfb\xe8\x60\xac";
+        let result = encode_url_no_pad(data);
+        assert!(!result.contains('+'));
+        assert!(!result.contains('/'));
+        assert!(!result.contains('='));
+        assert!(result.contains('-') || result.contains('_'));
     }
 }

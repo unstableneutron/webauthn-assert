@@ -1,5 +1,4 @@
-use base64::engine::general_purpose::STANDARD;
-use base64::Engine;
+use crate::base64util;
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -15,7 +14,7 @@ pub struct ClientData {
 pub fn build_client_data_json(challenge_bytes: &[u8], origin: &str) -> String {
     let client_data = ClientData {
         type_: "webauthn.get".to_string(),
-        challenge: STANDARD.encode(challenge_bytes),
+        challenge: base64util::encode_url_no_pad(challenge_bytes),
         origin: origin.to_string(),
         cross_origin: false,
     };
@@ -38,11 +37,27 @@ mod tests {
     }
 
     #[test]
-    fn test_challenge_base64_standard_encoded() {
+    fn test_challenge_base64url_no_pad_encoded() {
         let challenge = b"\x00\x01\x02\x03";
         let json = build_client_data_json(challenge, "https://example.com");
 
-        let expected_challenge = STANDARD.encode(challenge);
+        let expected_challenge = base64util::encode_url_no_pad(challenge);
         assert!(json.contains(&format!(r#""challenge":"{}""#, expected_challenge)));
+        assert!(!expected_challenge.contains('+'));
+        assert!(!expected_challenge.contains('/'));
+        assert!(!expected_challenge.contains('='));
+    }
+
+    #[test]
+    fn test_challenge_with_special_chars() {
+        let challenge = b"\xfb\xe8\x60\xac\x98\x25\x31\x29";
+        let json = build_client_data_json(challenge, "https://apple.com");
+
+        assert!(
+            json.contains(r#""challenge":"-"#)
+                || json.contains(r#""challenge":"_"#)
+                || !json.contains('+')
+        );
+        assert!(!json.contains("==\""));
     }
 }
